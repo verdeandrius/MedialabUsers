@@ -26,7 +26,7 @@ class ProfileFragment : Fragment() {
 
     private val profileViewModel: ProfileViewModel by viewModel()
     private lateinit var binding: FragmentProfileBinding
-    private val viewMode = MutableLiveData(ViewMode.CREATE_PROFILE)
+    private val viewMode = MutableLiveData<ViewMode>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,9 +42,12 @@ class ProfileFragment : Fragment() {
     }
 
     private fun initView() {
+        setObservers()
         setViewMode()
         setupCreateUserButton()
-        setObservers()
+        setupEditButton()
+        setupBackButton()
+        setupCloseButton()
     }
 
     private fun setViewMode() {
@@ -61,6 +64,23 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun setupEditButton(){
+        binding.ivEdit.setOnClickListener {
+            viewMode.value = ViewMode.EDIT_PROFILE
+        }
+    }
+
+    private fun setupCloseButton(){
+        binding.ivClose.setOnClickListener {
+            viewMode.value = ViewMode.VIEW_PROFILE
+        }
+    }
+
+    private fun setupBackButton(){
+        binding.ivBack.setOnClickListener {
+            closeFragment()
+        }
+    }
     private fun getEnteredUserData(): User {
         val rawUser = arguments?.getString(USER_DATA)
         return Gson().fromJson(rawUser, User::class.java)
@@ -84,10 +104,9 @@ class ProfileFragment : Fragment() {
     private val isUserAddedObserver = Observer<Boolean> {
         when (it) {
             true -> {
-                removeObservers()
                 Toast.makeText(requireContext(), getString(R.string.app_name), Toast.LENGTH_SHORT)
                     .show()
-                findNavController().popBackStack()
+                closeFragment()
             }
             false -> Toast.makeText(
                 requireContext(),
@@ -114,6 +133,11 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun closeFragment(){
+        removeObservers()
+        findNavController().popBackStack()
+    }
+
     private fun removeObservers() {
         profileViewModel.isUserAdded.removeObserver(isUserAddedObserver)
         viewMode.removeObserver(viewModeObserver)
@@ -128,31 +152,45 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun onCreateProfileMode(){
-        binding.tvBio.hide()
-        binding.tvName.hide()
-        binding.ivEdit.hide()
-        binding.ivClose.hide()
-        binding.ivSave.hide()
-        binding.etName.show()
-        binding.etBio.show()
-        binding.btCreate.show()
+    private fun onCreateProfileMode() {
+        binding.apply {
+            tvBio.hide()
+            tvName.hide()
+            ivEdit.hide()
+            ivClose.hide()
+            ivSave.hide()
+            etName.show()
+            etBio.show()
+            btCreate.show()
+        }
     }
 
     private fun onViewProfileMode() {
         setUserDataToTextView(getEnteredUserData())
-        binding.ivClose.hide()
-        binding.ivSave.hide()
-        binding.btCreate.hide()
-        binding.ivEdit.show()
+        binding.apply {
+            etName.hide()
+            etBio.hide()
+            ivClose.hide()
+            ivSave.hide()
+            btCreate.hide()
+            ivEdit.show()
+            tvBio.show()
+            tvName.show()
+        }
     }
 
     private fun onEditProfileMode() {
         setUserDataToEditText(getEnteredUserData())
-        binding.btCreate.hide()
-        binding.ivEdit.hide()
-        binding.ivClose.show()
-        binding.ivSave.show()
+        binding.apply {
+            tvBio.hide()
+            tvName.hide()
+            btCreate.hide()
+            ivEdit.hide()
+            ivClose.show()
+            ivSave.show()
+            etName.show()
+            etBio.show()
+        }
     }
 }
 

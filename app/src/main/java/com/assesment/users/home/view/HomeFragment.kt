@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -22,15 +23,23 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val homeViewModel: HomeViewModel by viewModel()
-    private val rvAdapter = UserRecyclerViewAdapter()
-    private var userSelected : User? = null
-    private var itemSelected : ItemUserListBinding? = null
+    private lateinit var rvAdapter : UserRecyclerViewAdapter
+    private var userSelected: User? = null
+    private var itemSelected: ItemUserListBinding? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            onBackPressed()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
+        rvAdapter =  UserRecyclerViewAdapter(findNavController())
         return binding.root
     }
 
@@ -61,7 +70,7 @@ class HomeFragment : Fragment() {
         binding.rvUsers.adapter = rvAdapter
     }
 
-    private fun setObservers(){
+    private fun setObservers() {
         homeViewModel.users.observe(viewLifecycleOwner, usersObserver)
     }
 
@@ -75,7 +84,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupEditButton(){
+    private fun setupEditButton() {
         binding.ivEdit.setOnClickListener {
             findNavController().navigate(
                 R.id.profileFragment, bundleOf(
@@ -86,17 +95,31 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupCloseButton(){
-        binding.ivClose.setOnClickListener{
-            binding.ivAdd.toggleVisibility()
-            binding.ivEdit.toggleVisibility()
-            binding.ivRemove.toggleVisibility()
-            binding.ivClose.toggleVisibility()
-            //TODO Unselect background
+    private fun onBackPressed() {
+        if (binding.ivClose.visibility == View.VISIBLE) {
+            onCloseControlButtonsAction()
+        } else {
+            requireActivity().finishAffinity()
         }
     }
 
-    private fun setupRvAdapter(){
+    private fun setupCloseButton() {
+        binding.ivClose.setOnClickListener {
+            onCloseControlButtonsAction()
+            // TODO Add unselect item
+        }
+    }
+
+    private fun onCloseControlButtonsAction() {
+        binding.apply {
+            ivAdd.toggleVisibility()
+            ivEdit.toggleVisibility()
+            ivRemove.toggleVisibility()
+            ivClose.toggleVisibility()
+        }
+    }
+
+    private fun setupRvAdapter() {
         rvAdapter.onUserSelectedListener = object : OnUserSelectedListener {
             override fun onUserSelected(user: User, itemBinding: ItemUserListBinding) {
                 userSelected = user
@@ -106,11 +129,14 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun onUserItemLongClickPressed(){
-        binding.ivAdd.toggleVisibility()
-        binding.ivEdit.toggleVisibility()
-        binding.ivRemove.toggleVisibility()
-        binding.ivClose.toggleVisibility()
+    private fun onUserItemLongClickPressed() {
+        binding.apply {
+            ivAdd.toggleVisibility()
+            ivEdit.toggleVisibility()
+            ivRemove.toggleVisibility()
+            ivClose.toggleVisibility()
+        }
+
     }
 
     private val usersObserver = Observer<List<User>> {

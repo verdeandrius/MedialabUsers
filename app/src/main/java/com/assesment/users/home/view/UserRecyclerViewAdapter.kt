@@ -1,11 +1,12 @@
 package com.assesment.users.home.view
 
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.assesment.users.common.models.User
 
-class UserRecyclerViewAdapter :
+class UserRecyclerViewAdapter(private val navController: NavController) :
     ListAdapter<User, UserItemViewHolder>(USER_COMPARATOR) {
 
     lateinit var onUserSelectedListener : OnUserSelectedListener
@@ -17,7 +18,7 @@ class UserRecyclerViewAdapter :
     override fun onBindViewHolder(holder: UserItemViewHolder, position: Int) {
         val repoData = getItem(position)
         if (repoData != null) {
-            holder.bind(repoData, onUserSelectedListener)
+            holder.bind(repoData, onUserSelectedListener, navController)
         }
     }
 
