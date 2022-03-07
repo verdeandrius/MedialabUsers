@@ -19,12 +19,15 @@ class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
     private val _isUserAdded = MutableLiveData<Boolean>()
     val isUserAdded: LiveData<Boolean> get() = _isUserAdded
 
+    private val _isUserUpdated = MutableLiveData<User>()
+    val isUserUpdated: LiveData<User> get() = _isUserUpdated
+
     fun addUser(user: User) = viewModelScope.launch(Dispatchers.IO) {
         _isUserAdded.postValue(repository.addUser(user))
     }
 
     fun updateUser(user: User) = viewModelScope.launch(Dispatchers.IO) {
-        repository.updateUser(user)
+        _isUserUpdated.postValue(repository.updateUser(user))
     }
 
 

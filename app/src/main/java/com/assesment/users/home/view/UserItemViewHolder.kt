@@ -30,9 +30,6 @@ class UserItemViewHolder(private val binding: ItemUserListBinding) :
                     true
                 }
             }
-
-
-
         }
 
     companion object {

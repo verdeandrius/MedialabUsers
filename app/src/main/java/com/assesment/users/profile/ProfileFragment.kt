@@ -48,6 +48,7 @@ class ProfileFragment : Fragment() {
         setupEditButton()
         setupBackButton()
         setupCloseButton()
+        setupSaveButton()
     }
 
     private fun setViewMode() {
@@ -64,23 +65,32 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun setupEditButton(){
+    private fun setupSaveButton() {
+        binding.ivSave.setOnClickListener {
+            if (validateInputFields()) {
+                profileViewModel.updateUser(getUserDataFromInputFields(getEnteredUserData().id))
+            }
+        }
+    }
+
+    private fun setupEditButton() {
         binding.ivEdit.setOnClickListener {
             viewMode.value = ViewMode.EDIT_PROFILE
         }
     }
 
-    private fun setupCloseButton(){
+    private fun setupCloseButton() {
         binding.ivClose.setOnClickListener {
             viewMode.value = ViewMode.VIEW_PROFILE
         }
     }
 
-    private fun setupBackButton(){
+    private fun setupBackButton() {
         binding.ivBack.setOnClickListener {
             closeFragment()
         }
     }
+
     private fun getEnteredUserData(): User {
         val rawUser = arguments?.getString(USER_DATA)
         return Gson().fromJson(rawUser, User::class.java)
@@ -98,6 +108,7 @@ class ProfileFragment : Fragment() {
 
     private fun setObservers() {
         profileViewModel.isUserAdded.observe(viewLifecycleOwner, isUserAddedObserver)
+        profileViewModel.isUserUpdated.observe(viewLifecycleOwner, isUserUpdatedObserver)
         viewMode.observe(viewLifecycleOwner, viewModeObserver)
     }
 
@@ -116,24 +127,40 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private val isUserUpdatedObserver = Observer<User> {
+        viewMode.value = ViewMode.VIEW_PROFILE
+        setUserDataToTextView(it)
+    }
+
     private fun setupCreateUserButton() {
         binding.btCreate.setOnClickListener {
-            if (
-                binding.etName.isNotEmpty(getString(R.string.app_name))
-                && binding.etBio.isNotEmpty(getString(R.string.app_name))
-            ) {
-                profileViewModel.addUser(
-                    User(
-                        name = binding.etName.text.toString(),
-                        bio = binding.etBio.text.toString(),
-                        avatarId = 1
-                    )
-                )
+            if (validateInputFields()) {
+                profileViewModel.addUser(getUserDataFromInputFields())
             }
         }
     }
 
-    private fun closeFragment(){
+    private fun validateInputFields(): Boolean {
+        return binding.etName.isNotEmpty(getString(R.string.app_name))
+                && binding.etBio.isNotEmpty(getString(R.string.app_name))
+    }
+
+    private fun getUserDataFromInputFields(id: String? = null): User {
+        return id?.let {
+            User(
+                name = binding.etName.text.toString(),
+                bio = binding.etBio.text.toString(),
+                avatarId = 1,
+                id = it
+            )
+        } ?: User(
+            name = binding.etName.text.toString(),
+            bio = binding.etBio.text.toString(),
+            avatarId = 1
+        )
+    }
+
+    private fun closeFragment() {
         removeObservers()
         findNavController().popBackStack()
     }
