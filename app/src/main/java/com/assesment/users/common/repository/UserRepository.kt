@@ -1,7 +1,8 @@
 package com.assesment.users.common.repository
 
-import com.assesment.users.common.HostViewModel
+
 import com.assesment.users.common.models.User
+import com.assesment.users.host.viewmodel.HostViewModel
 import com.google.gson.Gson
 import org.koin.dsl.module
 import java.lang.Exception

@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UsersManagement">
         <activity
-            android:name=".common.HostActivity"
+            android:name=".host.view.HostActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

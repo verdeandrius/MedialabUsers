@@ -1,4 +1,4 @@
-package com.assesment.users.common
+package com.assesment.users.host.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.assesment.users.common.models.UsersStorage

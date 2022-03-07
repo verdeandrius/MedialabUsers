@@ -3,6 +3,7 @@ package com.assesment.users.common
 import android.app.Application
 import com.assesment.users.common.repository.userRepositoryModule
 import com.assesment.users.home.viewmodel.homeViewModelModule
+import com.assesment.users.host.viewmodel.hostViewModelModule
 import com.assesment.users.profile.viewmodel.profileViewModelModule
 
 import org.koin.android.ext.koin.androidContext

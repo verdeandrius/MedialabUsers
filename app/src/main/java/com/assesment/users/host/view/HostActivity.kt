@@ -1,4 +1,4 @@
-package com.assesment.users.common
+package com.assesment.users.host.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
