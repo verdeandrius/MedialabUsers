@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import org.koin.dsl.module
 
 val profileViewModelModule = module {
-    single { ProfileViewModel(get()) }
+    factory { ProfileViewModel(get()) }
 }
 
 class ProfileViewModel(private val repository: UserRepository) : ViewModel() {

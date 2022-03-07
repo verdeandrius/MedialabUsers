@@ -1,44 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".profile.ProfileFragment">
+    tools:context=".profile.ProfileFragment"
+    android:animateLayoutChanges="true">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="15dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="15dp" />
+
+    <ImageView
+        style="@style/ImageViewTint"
+        android:id="@+id/iv_back"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="7dp"
+        android:paddingStart="0dp"
+        android:src="@drawable/arrow_left"
+        app:layout_constraintBottom_toTopOf="@id/guidelineControls"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry" />
+
+    <ImageView
+        style="@style/ImageViewTint"
+        android:id="@+id/iv_edit"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="8dp"
+        android:src="@drawable/account_edit"
+        app:layout_constraintBottom_toTopOf="@id/guidelineControls"
+        app:layout_constraintEnd_toStartOf="@id/iv_save"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        style="@style/ImageViewTint"
+        android:id="@+id/iv_save"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="8dp"
+        android:src="@drawable/check"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/guidelineControls"
+        app:layout_constraintEnd_toStartOf="@id/iv_close"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        style="@style/ImageViewTint"
+        android:id="@+id/iv_close"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="8dp"
+        android:src="@drawable/close"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/guidelineControls"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineControls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="56dp" />
 
     <EditText
         android:id="@+id/et_name"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/app_name"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/guidelineControls"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"/>
 
     <EditText
         android:id="@+id/et_bio"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/app_name"
-        app:layout_constraintTop_toBottomOf="@id/et_name"/>
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        app:layout_constraintTop_toBottomOf="@id/et_name" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/app_name"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/guidelineControls"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"/>
+
+    <TextView
+        android:id="@+id/tv_bio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/app_name"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        app:layout_constraintTop_toBottomOf="@id/et_name" />
 
     <Button
         android:id="@+id/bt_create"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/app_name"
         app:layout_constraintTop_toBottomOf="@id/et_bio"
-        android:text="@string/app_name"/>
-
-    <Button
-        android:id="@+id/user1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/bt_create"
-        android:text="User 1"/>
-
-    <Button
-        android:id="@+id/user2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/user1"
-        android:text="User 2"/>
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

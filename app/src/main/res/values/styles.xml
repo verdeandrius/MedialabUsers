@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ImageViewTint">
+        <item name="android:tint">@color/iconTintColor</item>
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
+
+</resources>

@@ -6,31 +6,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.assesment.users.R
+import com.assesment.users.common.hide
 import com.assesment.users.common.isNotEmpty
 import com.assesment.users.common.models.User
+import com.assesment.users.common.show
 import com.assesment.users.databinding.FragmentProfileBinding
 import com.assesment.users.profile.viewmodel.ProfileViewModel
+import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 const val UPDATE_MODE = "UPDATE_MODE"
+const val USER_DATA = "USER_DATA"
 
 class ProfileFragment : Fragment() {
 
     private val profileViewModel: ProfileViewModel by viewModel()
     private lateinit var binding: FragmentProfileBinding
-
-    private var updateMode = false
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            updateMode = it.getBoolean(UPDATE_MODE)
-
-        }
-    }
+    private val viewMode = MutableLiveData(ViewMode.CREATE_PROFILE)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,29 +38,56 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setObservers()
         initView()
-        initData()
     }
 
     private fun initView() {
+        setViewMode()
         setupCreateUserButton()
+        setObservers()
     }
 
-    private fun initData() {
+    private fun setViewMode() {
+        arguments?.let {
+            if (it.containsKey(USER_DATA)) {
+                if (it.getBoolean(UPDATE_MODE)) {
+                    viewMode.value = ViewMode.EDIT_PROFILE
+                } else {
+                    viewMode.value = ViewMode.VIEW_PROFILE
+                }
+            } else {
+                viewMode.value = ViewMode.CREATE_PROFILE
+            }
+        }
+    }
 
+    private fun getEnteredUserData(): User {
+        val rawUser = arguments?.getString(USER_DATA)
+        return Gson().fromJson(rawUser, User::class.java)
+    }
+
+    private fun setUserDataToEditText(user: User) {
+        binding.etName.setText(user.name)
+        binding.etBio.setText(user.bio)
+    }
+
+    private fun setUserDataToTextView(user: User) {
+        binding.tvName.text = user.name
+        binding.tvBio.text = user.bio
     }
 
     private fun setObservers() {
         profileViewModel.isUserAdded.observe(viewLifecycleOwner, isUserAddedObserver)
+        viewMode.observe(viewLifecycleOwner, viewModeObserver)
     }
 
     private val isUserAddedObserver = Observer<Boolean> {
         when (it) {
             true -> {
+                removeObservers()
                 Toast.makeText(requireContext(), getString(R.string.app_name), Toast.LENGTH_SHORT)
                     .show()
-                findNavController().navigateUp()
+                findNavController().popBackStack()
             }
             false -> Toast.makeText(
                 requireContext(),
@@ -90,4 +113,51 @@ class ProfileFragment : Fragment() {
             }
         }
     }
+
+    private fun removeObservers() {
+        profileViewModel.isUserAdded.removeObserver(isUserAddedObserver)
+        viewMode.removeObserver(viewModeObserver)
+    }
+
+    @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
+    private val viewModeObserver = Observer<ViewMode> { viewMode ->
+        when (viewMode) {
+            ViewMode.VIEW_PROFILE -> onViewProfileMode()
+            ViewMode.EDIT_PROFILE -> onEditProfileMode()
+            ViewMode.CREATE_PROFILE -> onCreateProfileMode()
+        }
+    }
+
+    private fun onCreateProfileMode(){
+        binding.tvBio.hide()
+        binding.tvName.hide()
+        binding.ivEdit.hide()
+        binding.ivClose.hide()
+        binding.ivSave.hide()
+        binding.etName.show()
+        binding.etBio.show()
+        binding.btCreate.show()
+    }
+
+    private fun onViewProfileMode() {
+        setUserDataToTextView(getEnteredUserData())
+        binding.ivClose.hide()
+        binding.ivSave.hide()
+        binding.btCreate.hide()
+        binding.ivEdit.show()
+    }
+
+    private fun onEditProfileMode() {
+        setUserDataToEditText(getEnteredUserData())
+        binding.btCreate.hide()
+        binding.ivEdit.hide()
+        binding.ivClose.show()
+        binding.ivSave.show()
+    }
+}
+
+private enum class ViewMode {
+    VIEW_PROFILE,
+    EDIT_PROFILE,
+    CREATE_PROFILE
 }

@@ -11,6 +11,14 @@ fun View.toggleVisibility() {
     }
 }
 
+fun View.show() {
+    visibility = View.VISIBLE
+}
+
+fun View.hide(invisible: Boolean = false) {
+    visibility = if (invisible) View.INVISIBLE else View.GONE
+}
+
 fun EditText.isNotEmpty(errorMessage: String) : Boolean {
     return if (text.isEmpty()){
         error = errorMessage

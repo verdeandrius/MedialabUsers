@@ -14,6 +14,8 @@ import com.assesment.users.common.toggleVisibility
 import com.assesment.users.databinding.FragmentHomeBinding
 import com.assesment.users.databinding.ItemUserListBinding
 import com.assesment.users.home.viewmodel.HomeViewModel
+import com.assesment.users.profile.UPDATE_MODE
+import com.assesment.users.profile.USER_DATA
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
@@ -22,6 +24,7 @@ class HomeFragment : Fragment() {
     private val homeViewModel: HomeViewModel by viewModel()
     private val rvAdapter = UserRecyclerViewAdapter()
     private var userSelected : User? = null
+    private var itemSelected : ItemUserListBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +52,7 @@ class HomeFragment : Fragment() {
         setupRvAdapter()
         setupUserRecyclerView()
         setupAddButton()
+        setupEditButton()
         setupCloseButton()
         setObservers()
     }
@@ -71,33 +75,45 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun setupEditButton(){
+        binding.ivEdit.setOnClickListener {
+            findNavController().navigate(
+                R.id.profileFragment, bundleOf(
+                    UPDATE_MODE to true,
+                    USER_DATA to userSelected.toString()
+                )
+            )
+        }
+    }
+
     private fun setupCloseButton(){
-        binding.ivAdd.toggleVisibility()
-        binding.ivEdit.toggleVisibility()
-        binding.ivRemove.toggleVisibility()
-        binding.ivClose.toggleVisibility()
+        binding.ivClose.setOnClickListener{
+            binding.ivAdd.toggleVisibility()
+            binding.ivEdit.toggleVisibility()
+            binding.ivRemove.toggleVisibility()
+            binding.ivClose.toggleVisibility()
+            //TODO Unselect background
+        }
     }
 
     private fun setupRvAdapter(){
         rvAdapter.onUserSelectedListener = object : OnUserSelectedListener {
             override fun onUserSelected(user: User, itemBinding: ItemUserListBinding) {
                 userSelected = user
-                onUserItemLongClickPressed(itemBinding)
+                itemSelected = itemBinding
+                onUserItemLongClickPressed()
             }
         }
     }
 
-    private fun onUserItemLongClickPressed(itemBinding: ItemUserListBinding){
+    private fun onUserItemLongClickPressed(){
         binding.ivAdd.toggleVisibility()
         binding.ivEdit.toggleVisibility()
         binding.ivRemove.toggleVisibility()
         binding.ivClose.toggleVisibility()
-        //TODO Unselect background
     }
 
     private val usersObserver = Observer<List<User>> {
         rvAdapter.submitList(it)
     }
-
-
 }

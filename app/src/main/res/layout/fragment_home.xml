@@ -32,43 +32,47 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        style="@style/ImageViewTint"
         android:id="@+id/iv_add"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:padding="8dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/account_plus"
         app:layout_constraintBottom_toTopOf="@id/guidelineControls"
         app:layout_constraintEnd_toStartOf="@id/iv_edit"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        style="@style/ImageViewTint"
         android:id="@+id/iv_edit"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:padding="8dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/account_edit"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/guidelineControls"
         app:layout_constraintEnd_toStartOf="@id/iv_remove"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        style="@style/ImageViewTint"
         android:id="@+id/iv_remove"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:padding="8dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/account_remove"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/guidelineControls"
         app:layout_constraintEnd_toStartOf="@id/iv_close"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        style="@style/ImageViewTint"
         android:id="@+id/iv_close"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:padding="8dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/close"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/guidelineControls"
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
