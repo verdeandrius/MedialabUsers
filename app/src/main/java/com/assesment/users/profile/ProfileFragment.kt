@@ -10,12 +10,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.assesment.users.R
-import com.assesment.users.common.hide
-import com.assesment.users.common.isNotEmpty
+import com.assesment.users.common.*
 import com.assesment.users.common.models.User
-import com.assesment.users.common.show
 import com.assesment.users.databinding.FragmentProfileBinding
 import com.assesment.users.profile.viewmodel.ProfileViewModel
+import com.facebook.drawee.view.SimpleDraweeView
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,6 +26,8 @@ class ProfileFragment : Fragment() {
     private val profileViewModel: ProfileViewModel by viewModel()
     private lateinit var binding: FragmentProfileBinding
     private val viewMode = MutableLiveData<ViewMode>()
+    private val avatarSelected = MutableLiveData<SimpleDraweeView>()
+    private var avatarValue: Int = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +50,7 @@ class ProfileFragment : Fragment() {
         setupBackButton()
         setupCloseButton()
         setupSaveButton()
+        setupAvatarImages()
     }
 
     private fun setViewMode() {
@@ -63,6 +65,58 @@ class ProfileFragment : Fragment() {
                 viewMode.value = ViewMode.CREATE_PROFILE
             }
         }
+    }
+
+    private fun setupAvatarImages() {
+        binding.avatar1.apply {
+            setImageURI(AVATAR_1_URL)
+            setOnClickListener {
+                avatarSelected.value = this
+                avatarValue = 1
+            }
+            setSelected(requireContext())
+        }
+
+        binding.avatar2.apply {
+            setImageURI(AVATAR_2_URL)
+            setOnClickListener {
+                avatarSelected.value = this
+                avatarValue = 2
+            }
+        }
+
+        binding.avatar3.apply {
+            setImageURI(AVATAR_3_URL)
+            setOnClickListener {
+                avatarSelected.value = this
+                avatarValue = 3
+            }
+        }
+
+        binding.avatar4.apply {
+            setImageURI(AVATAR_4_URL)
+            setOnClickListener {
+                avatarSelected.value = this
+                avatarValue = 4
+            }
+        }
+
+        binding.avatar5.apply {
+            setImageURI(AVATAR_5_URL)
+            setOnClickListener {
+                avatarSelected.value = this
+                avatarValue = 5
+            }
+        }
+
+        binding.avatar6.apply {
+            setImageURI(AVATAR_6_URL)
+            setOnClickListener {
+                avatarSelected.value = this
+                avatarValue = 6
+            }
+        }
+
     }
 
     private fun setupSaveButton() {
@@ -109,6 +163,7 @@ class ProfileFragment : Fragment() {
     private fun setObservers() {
         profileViewModel.isUserAdded.observe(viewLifecycleOwner, isUserAddedObserver)
         profileViewModel.isUserUpdated.observe(viewLifecycleOwner, isUserUpdatedObserver)
+        avatarSelected.observe(viewLifecycleOwner, avatarSelectedObserver)
         viewMode.observe(viewLifecycleOwner, viewModeObserver)
     }
 
@@ -150,13 +205,13 @@ class ProfileFragment : Fragment() {
             User(
                 name = binding.etName.text.toString(),
                 bio = binding.etBio.text.toString(),
-                avatarId = 1,
+                avatarId = avatarValue,
                 id = it
             )
         } ?: User(
             name = binding.etName.text.toString(),
             bio = binding.etBio.text.toString(),
-            avatarId = 1
+            avatarId = avatarValue
         )
     }
 
@@ -167,7 +222,21 @@ class ProfileFragment : Fragment() {
 
     private fun removeObservers() {
         profileViewModel.isUserAdded.removeObserver(isUserAddedObserver)
+        profileViewModel.isUserUpdated.removeObserver(isUserUpdatedObserver)
         viewMode.removeObserver(viewModeObserver)
+        avatarSelected.removeObserver(avatarSelectedObserver)
+    }
+
+    private val avatarSelectedObserver = Observer<SimpleDraweeView> {
+        binding.apply {
+            avatar1.setUnselected()
+            avatar2.setUnselected()
+            avatar3.setUnselected()
+            avatar4.setUnselected()
+            avatar5.setUnselected()
+            avatar6.setUnselected()
+        }
+        it.setSelected(requireContext())
     }
 
     @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")

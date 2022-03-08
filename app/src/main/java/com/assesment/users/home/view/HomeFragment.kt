@@ -9,6 +9,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.assesment.users.R
 import com.assesment.users.common.models.User
 import com.assesment.users.common.toggleVisibility
@@ -23,7 +25,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val homeViewModel: HomeViewModel by viewModel()
-    private lateinit var rvAdapter : UserRecyclerViewAdapter
+    private lateinit var rvAdapter: UserRecyclerViewAdapter
     private var userSelected: User? = null
     private var itemSelected: ItemUserListBinding? = null
 
@@ -39,7 +41,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
-        rvAdapter =  UserRecyclerViewAdapter(findNavController())
+        rvAdapter = UserRecyclerViewAdapter(findNavController())
         return binding.root
     }
 
@@ -67,7 +69,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupUserRecyclerView() {
-        binding.rvUsers.adapter = rvAdapter
+        binding.rvUsers.apply {
+            layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+            adapter = rvAdapter
+        }
     }
 
     private fun setObservers() {

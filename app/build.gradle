@@ -65,6 +65,10 @@ dependencies {
     implementation "io.insert-koin:koin-core:$koin_version"
     implementation "io.insert-koin:koin-android:$koin_version"
 
-    //Debug coroutines
+    // Debug coroutines
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.4.3-native-mt'
+
+    // Fresco (Images loader)
+    implementation 'com.facebook.fresco:fresco:2.6.0'
+    implementation 'com.github.bumptech.glide:glide:4.13.0'
 }
