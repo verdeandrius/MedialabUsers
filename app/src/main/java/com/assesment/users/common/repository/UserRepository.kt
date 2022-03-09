@@ -32,7 +32,7 @@ class UserRepository(private val hostViewModel: HostViewModel) {
     fun updateUser(user: User):User {
         hostViewModel.usersStorage.users?.map {
             if (it.id == user.id) {
-                it.avatarId = user.avatarId
+                it.avatarUrl = user.avatarUrl
                 it.name = user.name
                 it.bio = user.bio
             }

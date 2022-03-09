@@ -77,83 +77,122 @@
         app:layout_constraintGuide_begin="56dp" />
 
     <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/avatarSelected"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:actualImageScaleType="fitCenter"
+        app:failureImage="@drawable/cloud_alert"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        app:layout_constraintTop_toBottomOf="@id/guidelineControls"
+        app:layout_constraintBottom_toTopOf="@id/guidelineInputFields"
+        app:layout_constraintWidth_percent="0.7"
+        android:visibility="gone"
+        app:placeholderImage="@drawable/cloud_search" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/avatar1"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
         app:actualImageScaleType="fitCenter"
         app:failureImage="@drawable/cloud_alert"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
         app:layout_constraintTop_toBottomOf="@id/guidelineControls"
+        app:layout_constraintBottom_toTopOf="@id/guidelineCenterHorizontalAvatars"
         app:layout_constraintWidth_percent="0.3"
         app:placeholderImage="@drawable/cloud_search" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/avatar2"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
         app:actualImageScaleType="fitCenter"
         app:failureImage="@drawable/cloud_alert"
-        app:layout_constraintStart_toEndOf="@id/avatar1"
         app:layout_constraintEnd_toStartOf="@id/avatar3"
+        app:layout_constraintStart_toEndOf="@id/avatar1"
         app:layout_constraintTop_toBottomOf="@id/guidelineControls"
+        app:layout_constraintBottom_toTopOf="@id/guidelineCenterHorizontalAvatars"
         app:layout_constraintWidth_percent="0.3"
         app:placeholderImage="@drawable/cloud_search" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/avatar3"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
         app:actualImageScaleType="fitCenter"
         app:failureImage="@drawable/cloud_alert"
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
         app:layout_constraintTop_toBottomOf="@id/guidelineControls"
+        app:layout_constraintBottom_toTopOf="@id/guidelineCenterHorizontalAvatars"
         app:layout_constraintWidth_percent="0.3"
         app:placeholderImage="@drawable/cloud_search" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineCenterHorizontalAvatars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.29" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/avatar4"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
         app:actualImageScaleType="fitCenter"
         app:failureImage="@drawable/cloud_alert"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/avatar1"
+        app:layout_constraintTop_toBottomOf="@id/guidelineCenterHorizontalAvatars"
+        app:layout_constraintBottom_toTopOf="@id/guidelineInputFields"
         app:layout_constraintWidth_percent="0.3"
         app:placeholderImage="@drawable/cloud_search" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/avatar5"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
         app:actualImageScaleType="fitCenter"
         app:failureImage="@drawable/cloud_alert"
-        app:layout_constraintStart_toEndOf="@id/avatar4"
         app:layout_constraintEnd_toStartOf="@id/avatar6"
-        app:layout_constraintTop_toBottomOf="@id/avatar2"
+        app:layout_constraintStart_toEndOf="@id/avatar4"
+        app:layout_constraintTop_toBottomOf="@id/guidelineCenterHorizontalAvatars"
+        app:layout_constraintBottom_toTopOf="@id/guidelineInputFields"
         app:layout_constraintWidth_percent="0.3"
         app:placeholderImage="@drawable/cloud_search" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/avatar6"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
         app:actualImageScaleType="fitCenter"
         app:failureImage="@drawable/cloud_alert"
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-        app:layout_constraintTop_toBottomOf="@id/avatar3"
+        app:layout_constraintTop_toBottomOf="@id/guidelineCenterHorizontalAvatars"
+        app:layout_constraintBottom_toTopOf="@id/guidelineInputFields"
         app:layout_constraintWidth_percent="0.3"
         app:placeholderImage="@drawable/cloud_search" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/avatarGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="avatar1,avatar2,avatar3,avatar4,avatar5,avatar6" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineInputFields"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
 
     <EditText
+        android:layout_marginTop="15dp"
         android:id="@+id/et_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/app_name"
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/avatar4" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineInputFields" />
 
     <EditText
         android:id="@+id/et_bio"
@@ -172,7 +211,8 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toTopOf="@id/guidelineControls" />
+        app:layout_constraintTop_toTopOf="@id/guidelineInputFields"
+        android:layout_marginTop="15dp"/>
 
     <TextView
         android:id="@+id/tv_bio"
@@ -190,6 +230,7 @@
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
         app:layout_constraintTop_toBottomOf="@id/et_bio" />
 

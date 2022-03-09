@@ -24,7 +24,7 @@ class UserItemViewHolder(private val binding: ItemUserListBinding) :
             // Data
             tvName.text = user.name
             tvBio.text = user.bio
-            ivAvatar.setImageURI(getAvatarImageUrl(user.avatarId))
+            ivAvatar.setImageURI(user.avatarUrl)
 
             // OnClickListeners
             cvUser.apply {
@@ -51,14 +51,5 @@ class UserItemViewHolder(private val binding: ItemUserListBinding) :
             val binding = ItemUserListBinding.bind(view)
             return UserItemViewHolder(binding)
         }
-    }
-
-    private fun getAvatarImageUrl(avatarId: Int) = when(avatarId) {
-        1 -> AVATAR_1_URL
-        2 -> AVATAR_2_URL
-        3 -> AVATAR_3_URL
-        4 -> AVATAR_4_URL
-        5 -> AVATAR_5_URL
-        else -> AVATAR_6_URL
     }
 }

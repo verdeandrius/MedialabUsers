@@ -5,7 +5,7 @@ import java.util.*
 
 data class User(
     var name: String,
-    var avatarId: Int,
+    var avatarUrl: String,
     var bio: String,
     val id: String = UUID.randomUUID().toString(),
 ) {

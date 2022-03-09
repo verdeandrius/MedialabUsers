@@ -27,7 +27,7 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private val viewMode = MutableLiveData<ViewMode>()
     private val avatarSelected = MutableLiveData<SimpleDraweeView>()
-    private var avatarValue: Int = 1
+    private var avatarValue: String = AVATAR_1_URL
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,7 +72,7 @@ class ProfileFragment : Fragment() {
             setImageURI(AVATAR_1_URL)
             setOnClickListener {
                 avatarSelected.value = this
-                avatarValue = 1
+                avatarValue = AVATAR_1_URL
             }
             setSelected(requireContext())
         }
@@ -81,7 +81,7 @@ class ProfileFragment : Fragment() {
             setImageURI(AVATAR_2_URL)
             setOnClickListener {
                 avatarSelected.value = this
-                avatarValue = 2
+                avatarValue = AVATAR_2_URL
             }
         }
 
@@ -89,7 +89,7 @@ class ProfileFragment : Fragment() {
             setImageURI(AVATAR_3_URL)
             setOnClickListener {
                 avatarSelected.value = this
-                avatarValue = 3
+                avatarValue = AVATAR_3_URL
             }
         }
 
@@ -97,7 +97,7 @@ class ProfileFragment : Fragment() {
             setImageURI(AVATAR_4_URL)
             setOnClickListener {
                 avatarSelected.value = this
-                avatarValue = 4
+                avatarValue = AVATAR_4_URL
             }
         }
 
@@ -105,7 +105,7 @@ class ProfileFragment : Fragment() {
             setImageURI(AVATAR_5_URL)
             setOnClickListener {
                 avatarSelected.value = this
-                avatarValue = 5
+                avatarValue = AVATAR_5_URL
             }
         }
 
@@ -113,7 +113,7 @@ class ProfileFragment : Fragment() {
             setImageURI(AVATAR_6_URL)
             setOnClickListener {
                 avatarSelected.value = this
-                avatarValue = 6
+                avatarValue = AVATAR_6_URL
             }
         }
 
@@ -150,14 +150,20 @@ class ProfileFragment : Fragment() {
         return Gson().fromJson(rawUser, User::class.java)
     }
 
-    private fun setUserDataToEditText(user: User) {
-        binding.etName.setText(user.name)
-        binding.etBio.setText(user.bio)
+    private fun setUserDataToEditFields(user: User) {
+        binding.apply {
+            etName.setText(user.name)
+            etBio.setText(user.bio)
+            avatarValue = user.avatarUrl
+        }
     }
 
-    private fun setUserDataToTextView(user: User) {
-        binding.tvName.text = user.name
-        binding.tvBio.text = user.bio
+    private fun setUserDataToViewFields(user: User) {
+        binding.apply {
+            tvName.text = user.name
+            tvBio.text = user.bio
+            avatarSelected.setImageURI(user.avatarUrl)
+        }
     }
 
     private fun setObservers() {
@@ -184,7 +190,7 @@ class ProfileFragment : Fragment() {
 
     private val isUserUpdatedObserver = Observer<User> {
         viewMode.value = ViewMode.VIEW_PROFILE
-        setUserDataToTextView(it)
+        setUserDataToViewFields(it)
     }
 
     private fun setupCreateUserButton() {
@@ -205,13 +211,13 @@ class ProfileFragment : Fragment() {
             User(
                 name = binding.etName.text.toString(),
                 bio = binding.etBio.text.toString(),
-                avatarId = avatarValue,
+                avatarUrl = avatarValue,
                 id = it
             )
         } ?: User(
             name = binding.etName.text.toString(),
             bio = binding.etBio.text.toString(),
-            avatarId = avatarValue
+            avatarUrl = avatarValue
         )
     }
 
@@ -255,6 +261,8 @@ class ProfileFragment : Fragment() {
             ivEdit.hide()
             ivClose.hide()
             ivSave.hide()
+            avatarSelected.hide()
+            avatarGroup.show()
             etName.show()
             etBio.show()
             btCreate.show()
@@ -262,13 +270,15 @@ class ProfileFragment : Fragment() {
     }
 
     private fun onViewProfileMode() {
-        setUserDataToTextView(getEnteredUserData())
+        setUserDataToViewFields(getEnteredUserData())
         binding.apply {
             etName.hide()
             etBio.hide()
             ivClose.hide()
             ivSave.hide()
             btCreate.hide()
+            avatarGroup.hide()
+            avatarSelected.show()
             ivEdit.show()
             tvBio.show()
             tvName.show()
@@ -276,12 +286,14 @@ class ProfileFragment : Fragment() {
     }
 
     private fun onEditProfileMode() {
-        setUserDataToEditText(getEnteredUserData())
+        setUserDataToEditFields(getEnteredUserData())
         binding.apply {
             tvBio.hide()
             tvName.hide()
             btCreate.hide()
             ivEdit.hide()
+            avatarSelected.hide()
+            avatarGroup.show()
             ivClose.show()
             ivSave.show()
             etName.show()
